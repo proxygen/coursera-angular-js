@@ -50,7 +50,7 @@
                 <blockquote ng-repeat="comment in ddCtrl.dish.comments | orderBy:ddCtrl.sortingPredicate">
                     <p>{{comment.rating}} Stars</p>
                     <p>{{comment.comment}}</p>
-                    <footer>{{comment.author}}, {{comment.date | date : "MMM. dd, yyyy"}}</footer>
+                    <footer>{{comment.author}}, {{comment.date | date : 'mediumDate'}}</footer>
                 </blockquote>
             </div>
         </div>
