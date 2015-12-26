@@ -139,3 +139,84 @@ An Angular Filter format the value of an expression for display but do not modif
     }
 </script>
 ```
+## Angular Factory and Service
+### Dependency Injection
+#### Roles of DI
+* The service
+* The client
+* The interfaces
+* The injector
+#### Dependency Annotation in Angular
+* Inline array annotation
+```javascript
+module.controller('MenuController', ['$scope', 'menuFactory', function($scope, menuFactory) {
+}]);
+```
+
+* $inject property annotation
+```javascript
+var MenuController = function($scope, menuFactory) {
+};
+MenuController.$inject = ['$scope', 'menuFactory'];
+module.controller('MenuController', MenuController);
+```
+
+* Implicit annotation
+```javascript
+module.controller('MenuController', function($scope, menuFactory){
+});
+```
+
+### Angular services
+* Substitutable objects wired together using ID
+* Allows organizing and sharing code across an app
+* Lazily instantiated
+* Singletons
+
+#### Built-in services
+AN Angular's built-in service always start with '$' and being injected using DI. ex. $http, $scope, $rootScope, $location, $parse, $templateCache, $animate, $injector
+Five functions that declare services:
+* service()
+* factory()
+* provider()
+* constant()
+* value()
+
+### Angular Factory
+```javascript
+// Declaration of Factory
+angular.module('confusionApp')
+    .factory('menuFactory', function() {
+        var menufac = {};
+        var dishes = [ … ];
+        menufac.getDishes =	function() {
+            return dishes;
+        };
+        menufac.getDish = function (index) {
+            return dishes[index];
+        };
+        return menufac;
+    });
+
+// Usage of Factory
+angular.module('confusionApp')
+.controller('MenuController', ['$scope',
+    'menuFactory', function($scope, menuFactory)
+{
+    $scope.dishes = menuFactory.getDishes();
+}]);
+
+// Declaration of Service
+angular.module('confusionApp')
+    .service('menuFactory', function() {
+        var dishes = [ … ];
+        this.getDishes =	function() {
+            return dishes;
+        };
+        this.getDish = function (index) {
+            return dishes[index];
+        };
+    });
+
+// Usage of Service is exactly the same as Factory
+```
