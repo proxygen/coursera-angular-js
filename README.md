@@ -331,7 +331,7 @@ angular.module('confusionApp', ['ui.router'])
             url:'/',
             views: {
                 'header': { templateUrl : 'views/header.html' },
-                'content': { template : '<h1>To be Completed</h1>', controller  : 'IndexController’ },
+                'content': { template : '<h1>To be Completed</h1>', controller  : 'IndexController' },
                 'footer': { templateUrl : 'views/footer.html' }
             }
         })
