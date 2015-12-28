@@ -330,9 +330,9 @@ angular.module('confusionApp', ['ui.router'])
         .state('app', { // route for the home page
             url:'/',
             views: {
-                'header': { templateUrl : 'views/header.html’ },
+                'header': { templateUrl : 'views/header.html' },
                 'content': { template : '<h1>To be Completed</h1>', controller  : 'IndexController’ },
-                'footer': { templateUrl : 'views/footer.html’ }
+                'footer': { templateUrl : 'views/footer.html' }
             }
         })
         .state('app.aboutus', { // route for the aboutus page
