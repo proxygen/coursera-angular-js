@@ -189,7 +189,7 @@ angular.module('confusionApp')
     .factory('menuFactory', function() {
         var menufac = {};
         var dishes = [ … ];
-        menufac.getDishes =	function() {
+        menufac.getDishes = function() {
             return dishes;
         };
         menufac.getDish = function (index) {
@@ -210,7 +210,7 @@ angular.module('confusionApp')
 angular.module('confusionApp')
     .service('menuFactory', function() {
         var dishes = [ … ];
-        this.getDishes =	function() {
+        this.getDishes = function() {
             return dishes;
         };
         this.getDish = function (index) {
@@ -219,4 +219,160 @@ angular.module('confusionApp')
     });
 
 // Usage of Service is exactly the same as Factory
+```
+
+## Angular Templates
+### ng-include Directive
+```html
+<div ng-include="'menu.html'"></div>
+<ng-include src="'menu.html'"></ng-include>
+```
+
+## Single Page Applications (SPAs) and Angular ng-route
+### Deep Linking
+Hyperlink that specifies a link to a searchable or indexed piece of web content.
+Example:
+```url
+http://www.conFusion.food/index.html#/menu/0
+```
+
+The section after the '#' sign called hash. Any change to the hash portion does not cause a page reload.
+
+### The $location Service
+* Expose the current URL in the browser address bar:
+  * watch and observe the URL
+  * change the URL
+* Synchroniwes the URL with the browser when the user:
+  * changes the address bar
+  * clicks the back/forward buttons
+  * clicks on a link
+* Allows you to manipulate the hash portion of a URL
+  * url(): get/set the URL
+  * path(): get/set the path
+  * search(): get/set the search part
+  * hash(): get/set the hash part
+
+### Angular ngRoute Module
+* Install
+```shell
+bower install angular-route -S
+```
+
+* Manages the interaction between the $location service and the rendered view
+
+* Dependency injection into the module:
+```javascript
+angular.module('conFusionApp',[ngRoute])
+```
+
+### The $routeProvider
+An Angular provider that enables mapping from the routes to handlers. Handler are an object that defines template URL and controller.
+
+#### $routeProvider configuration
+```javascript
+angular.module('confusionApp', ['ngRoute'])
+.config(function($routeProvider) {
+    $routeProvider
+        .when('/contactus', { // route for the contactus page
+            templateUrl : 'contactus.html’, controller : 'ContactController'
+        })
+        .when('/menu', { // route for the menu pag
+            templateUrl : 'menu.html', controller : 'MenuController'
+        })
+        .when('/menu/:id', { // route for the dish details page
+            templateUrl : 'dishdetail.html', controller  : 'DishDetailController'
+        })
+        .otherwise('/contactus');
+});
+```
+
+#### $routeParams
+* menu.html:
+```html
+    <a ng-href="#/menu/{{dish._id}}"></a>
+```
+
+* DishDetailController:
+```javascript
+.controller('DishDetailController', ['$scope', '$routeParams', 
+    'menuFactory', function($scope, $routeParams, menuFactory) {
+        var dish= menuFactory.getDish(parseInt($routeParams.id,10));
+        $scope.dish = dish;
+}]);
+```
+
+### ngView Directive
+Works together with $route service to include the rendered template of the current route into the main layout
+Usage:
+```html
+<ng-view></ng-view>
+<div ng-view></div>
+```
+
+## Angular UI-Router
+* Differ to ngView, a page can have more than one UI-Router.
+* UI-Router based on the state of the application
+* support multiple views and nested views
+
+### install UI Router and DI into the module
+```shell
+bower install angular-ui-router -S
+```
+
+```javascript
+angular.module('confusionApp', ['ui.router'])
+```
+
+### Usage of UI-Router
+```javascript
+.config(function($stateProvider, $urlRouterProvider) {
+    $stateProvider
+        .state('app', { // route for the home page
+            url:'/',
+            views: {
+                'header': { templateUrl : 'views/header.html’ },
+                'content': { template : '<h1>To be Completed</h1>', controller  : 'IndexController’ },
+                'footer': { templateUrl : 'views/footer.html’ }
+            }
+        })
+        .state('app.aboutus', { // route for the aboutus page
+            url:'aboutus',
+            views: {
+                'content@': { template: '<h1>To be Completed</h1>', controller  : 'AboutController'  }
+            }
+        });
+    $urlRouterProvider.otherwise('/');
+});
+```
+
+#### uiView Directive
+Indicates where to include the views
+```html
+<div ui-view="header"></div>
+<div ui-view="content"></div>
+<div ui-view="footer"></div>
+```
+
+#### ui-sref
+* Use ui-sref="state" to indicate which state to move to when clicked
+```html
+<a ui-sref="app"></a>
+<a ui-sref="app.aboutus"></a>
+<a ui-sref="app.menu"></a>
+```
+
+* Corresponding href will be generated upon compilation
+
+#### $stateParams
+* menu.html
+```html
+<a ui-sref="app.dishdetails({id: dish._id})"> . . . </a>
+```
+
+```javascript
+.controller('DishDetailController', ['$scope', '$stateParams', 
+    'menuFactory', function($scope, $stateParams, menuFactory) {
+        var dish= menuFactory.getDish(parseInt($stateParams.id,10));
+        $scope.dish = dish;
+}]);
 ```
