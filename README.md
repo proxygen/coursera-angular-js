@@ -274,7 +274,7 @@ angular.module('confusionApp', ['ngRoute'])
 .config(function($routeProvider) {
     $routeProvider
         .when('/contactus', { // route for the contactus page
-            templateUrl : 'contactus.html’, controller : 'ContactController'
+            templateUrl : 'contactus.html', controller : 'ContactController'
         })
         .when('/menu', { // route for the menu pag
             templateUrl : 'menu.html', controller : 'MenuController'
