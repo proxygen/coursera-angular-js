@@ -6,21 +6,25 @@
                 <h3 align=center>Our Lipsmacking Culinary Creations</h3>
             </div>
             <div class="col-xs-12 col-sm-9 col-sm-pull-3">
-                <div class="media-left media-middle">
-                    <a ui-sref="app.dishdetails({id: featuredDish._id})">
-                    <img class="media-object img-thumbnail"
-                    ng-src={{featuredDish.image}} alt="{{featuredDish.name}}">
-                    </a>
+                <div ng-if="!showDish">
+                    <h3>{{message}}</h3>
                 </div>
-                <div class="media-body">
-                    <h2 class="media-heading">{{featuredDish.name}}
-                    <span class="label label-danger">{{featuredDish.label}}</span>
-                    <span class="badge">{{featuredDish.price | currency}}</span></h2>
-                    <p>{{featuredDish.description}}</p>
+                <div class="media" ng-if="showDish">
+                    <div class="media-left media-middle">
+                        <a ui-sref="app.dishdetails({id: dish.id})">
+                        <img class="media-object img-thumbnail"
+                        ng-src={{dish.image}} alt="{{dish.name}}">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h2 class="media-heading">{{dish.name}}
+                        <span class="label label-danger">{{dish.label}}</span>
+                        <span class="badge">{{dish.price | currency}}</span></h2>
+                        <p>{{dish.description}}</p>
+                    </div>
                 </div>
             </div>
         </div>
-
 
         <div class="row row-content">
             <div class="col-xs-12 col-sm-3">
@@ -28,15 +32,17 @@
                 <h3 align=center>This Month's Promotions</h3>
             </div>
             <div class="col-xs-12 col-sm-9">
-                <div class="pull-right">
-                    <img class="media-object img-thumbnail"
-                    ng-src={{promotion.image}} alt="{{promotion.name}}">
-                </div>
-                <div class="media-body">
-                    <h2 class="media-heading">{{promotion.name}}
-                    <span class="label label-danger">{{promotion.label}}</span>
-                    <span class="badge">{{promotion.price | currency}}</span></h2>
-                    <p>{{promotion.description}}</p>
+                <div class="media">
+                    <div class="pull-right">
+                        <img class="media-object img-thumbnail"
+                        ng-src={{promotion.image}} alt="{{promotion.name}}">
+                    </div>
+                    <div class="media-body">
+                        <h2 class="media-heading">{{promotion.name}}
+                        <span class="label label-danger">{{promotion.label}}</span>
+                        <span class="badge">{{promotion.price | currency}}</span></h2>
+                        <p>{{promotion.description}}</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -47,13 +53,15 @@
                 <h3 align=center>Meet our Culinary Specialists</h3>
             </div>
             <div class="col-xs-12 col-sm-9 col-sm-pull-3">
-                <div class="media-left media-middle">
-                    <img class="media-object img-thumbnail"
-                    ng-src={{ec.image}} alt="{{ec.abbr}}">
-                </div>
-                <div class="media-body">
-                    <h2 class="media-heading">{{ec.name}}</h2>
-                    <p>{{ec.description}}</p>
+                <div class="media">
+                    <div class="media-left media-middle">
+                        <img class="media-object img-thumbnail"
+                        ng-src={{ec.image}} alt="{{ec.abbr}}">
+                    </div>
+                    <div class="media-body">
+                        <h2 class="media-heading">{{ec.name}}</h2>
+                        <p>{{ec.description}}</p>
+                    </div>
                 </div>
             </div>
         </div>
