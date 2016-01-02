@@ -2,3 +2,4 @@ conFusion/dist/
 .DS_Store
 conFusion/.tmp/
 conFusion/node_modules/
+json-server/public/*

@@ -376,3 +376,112 @@ Indicates where to include the views
         $scope.dish = dish;
 }]);
 ```
+
+## Angular $http Service
+Core Angular service to communicate with servers using the HTTP protocol via the browser's XMLHttpRequest or JSONP
+
+### Promise
+Angular $q service: run functions asynchronously and use the return value (or exceptions) when they are done processing
+
+### The $http Service
+* The $http service returns a promise:
+```javascript
+$http({method: 'GET', url: '/dishes'})
+    .then(function() {...}, function() {...})
+```
+
+* Shortcut methods:
+$http.\[get | put | post | delete | jsonp | head]()
+
+### HTTP GET example
+```javascript
+$http.get(baseURL + "dishes")
+.then(
+    function(response) {
+        $scope.dishes = response.data;
+        $scope.showMenu = true;
+    },
+    fuction(response) {
+        $scope.message = "Error:" + response.status + " " + response.statusText;
+    }
+);
+```
+
+### HTTP Response
+Response of the HTTP request:
+* response.data: String/object containing the body of the message
+* response.status: status code
+* response.headers: header information
+* response.config: configuration object
+* response.statusText: HTTP status text of the response
+
+## Client-Server Communication using $resource
+### Angular ngResource
+* The ngResource module provides a higher level abstraction than $http for interacting with a RESTful API server
+* Not part of Angular core
+
+### Installation and Using ngResource
+```shell
+bower install angular-resource -S
+```
+
+```javascript
+angular.module('confusionApp', ['ui.router', 'ngResource'])
+```
+
+### Angular $resource Service
+* wrapper around a REST API to perform CRUD operations
+ * no need to deal with $http directly, higher level abstraction
+* Dependency injection
+```javascript
+ .service(menuFactory', ['$resource', 'baseURL', function($resource, base URL') {
+    ...
+ }])
+ ```
+* Usage:
+```javascript
+$resource(url, [paramDefault], [action], options);
+```
+
+### $resource default actions
+```javascript
+{'get': {method: 'GET'},
+ 'save: {method: 'POST'},
+ 'query': {method: 'GET', isArray: true},
+ 'remove': {method: 'DELETE'},
+ 'delete': {method: 'DELETE'}};
+```
+
+### Using $resource Example
+```javascript
+$resource(baseURL + "dishes/:id", null, {'update': {method: 'PUT'}});
+
+// $resource methods: .query(), .get(), .save(), .remove(), .delete()
+
+$scope.dishes = $resource(baseURL + "dishes/:id", null,
+    {'update': {method: 'PUT'}}).query();
+
+// '$' prefix can be used with all non GET methods
+var dish = $resource(baseURL + "dishes/:id", null,
+    {'update': {methode: 'PUT'}}).get({id: 0}, function() {
+        dish.name = "dovanut";
+        dish.$save();
+    });
+
+// Custom PUT request
+$resource(baseURL + "dishes/:id", null, {'update': {method: 'PUT'}})
+    .update({id: $scope.dish.id}, $scope.dish);
+
+// Error handling
+$resource(baseURL + "dishes/:id", null, {'update': {method: 'PUT'}})
+    .query(
+        function(response) {
+            $scope.dishes = response;
+            $scope.showMenu = true;
+        },
+        function(response) {
+            $scope.message = "Error: " + response.status + " " + response.statusText;
+        }
+    );
+```
+
