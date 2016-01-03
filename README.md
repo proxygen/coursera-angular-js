@@ -146,6 +146,7 @@ An Angular Filter format the value of an expression for display but do not modif
 * The client
 * The interfaces
 * The injector
+
 #### Dependency Annotation in Angular
 * Inline array annotation
 ```javascript
@@ -446,7 +447,7 @@ $resource(url, [paramDefault], [action], options);
 ### $resource default actions
 ```javascript
 {'get': {method: 'GET'},
- 'save: {method: 'POST'},
+ 'save': {method: 'POST'},
  'query': {method: 'GET', isArray: true},
  'remove': {method: 'DELETE'},
  'delete': {method: 'DELETE'}};
@@ -483,5 +484,57 @@ $resource(baseURL + "dishes/:id", null, {'update': {method: 'PUT'}})
             $scope.message = "Error: " + response.status + " " + response.statusText;
         }
     );
+```
+
+## Angular Testing
+### Jasmin
+Behavior driven development framework for JavaScript:
+* Adopted to test Angular applications
+* Use "describe" function to group our tests
+* Use "it" function to define individual tests
+
+Jasmine Example:
+```javascript
+describe('Controller: MenuController', function() {
+    it('should create "dishes" with 2 dishes fetched from xhr', function() {
+        expect(scope.showMenu).boBeTruthy();
+        expect(scope.dishes).toBeDefined();
+        expect(scope.dishes.length).toBe(2);
+    });
+});
+```
+
+### Karma
+JavaScript based command line tool (NodeJS application):
+* Spawns a web server to load your application's source code
+* Executes your tests in the browser
+
+### angular-mocks
+Angular ngMock module provides mocking support for your tests:
+* Inject and mock Angular services within unit tests
+* Make asynchronous modules execute synchronously to make it easier to execute tests
+* $httpBackend lets us mock XHR requests in tests
+
+Angular Mocks Example!
+```javascript
+// load the controller's module
+beforEach(module('confusionApp'));
+
+var MenuController, scope, $httpBackend;
+
+// Initialize the controller and a mock scope
+beforeEach(inject(function($controller, _$httpBackend_, $rootScope, menuFactory) {
+    // place here mocked dependencies
+    $httpBackend = _$httpBackend_;
+    $httpBackend.expectGET("http://localhost:3000/dishes").respond([...]);
+    
+    scope = $rootScope.$new();
+    
+    MenuController = $controller('MenuController, {
+        $scope: scope, menuFactory: menuFactory
+    });
+        
+    $httpBackend.flush();
+}));
 ```
 
