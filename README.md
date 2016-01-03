@@ -25,7 +25,13 @@ sudo npm install -g json-server
 sudo npm install -g karma-cli
 
 # protractor
-sudo npm install protractor -g
+sudo npm install -g protractor
+
+# Yo
+sudo npm install -g yo
+
+# Generators
+sudo npm install -g generator-angular
 ```
 
 ## Intro to Front-End JavaScript Frameworks
@@ -547,7 +553,7 @@ describe('conFusion App E2E Testing', function() {
     });
 });
 
-describe('menu 0 item',function() {
+describe('menu 0 item', function() {
   beforeEach(function() {
     browser.get('index.html#/menu/0');
   });
@@ -569,4 +575,30 @@ describe('menu 0 item',function() {
     expect(author.getText()).toContain('25 Cent');
   });
 });
+```
+
+## Yo and Yeoman
+### Web tools
+* Bower: Package Manager for the Web
+* Grunt and Gulp: task automation
+* Yo: Web App Scaffolding
+* Yeoman: Workflow designed around using Yo, Bower and Grunt
+
+### Yo Scaffolding
+* Quickly scaffold out new projects
+ * Hand crafting all the project folder hierarchy
+ * Assembling together all the tools
+ * Designing the Workflow
+* Yo scaffolding tool takes care of:
+ * Scaffolding out your next application
+  * Generators to help you scaffold out your application
+  * Robust opinionated client-side stack
+ * Setting up all the tools for the Workflow
+  * leverages the successful open-sourc tools being used in the community
+
+### Scaffolding out a project
+1. Create a project folder
+2. Go to the project folder and type:
+```shell
+yo angular
 ```
