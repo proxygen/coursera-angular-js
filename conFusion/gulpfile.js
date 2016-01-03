@@ -27,6 +27,14 @@ gulp.task('clean', function() {
     return del(['dist']);
 });
 
+// Publish task
+gulp.task('publish', ['default', 'usemin', 'imagemin', 'copyfonts'], function() {
+  gulp.src('./dist/**/*')
+    .pipe(gulp.dest("../json-server/public"))
+    .pipe(notify({ message: 'Publish task complete', onLast: true }))
+  ;
+});
+
 // Default task
 gulp.task('default', ['clean'], function() {
     gulp.start('usemin', 'imagemin','copyfonts');
@@ -46,7 +54,8 @@ gulp.task('imagemin', function() {
   return del(['dist/images']), gulp.src('app/images/**/*')
     .pipe(cache(imagemin({ optimizationLevel: 3, progressive: true, interlaced: true })))
     .pipe(gulp.dest('dist/images'))
-    .pipe(notify({ message: 'Images task complete' }));
+//    .pipe(notify({ message: 'Images task complete' }))
+  ;
 });
 
 gulp.task('copyfonts', ['clean'], function() {
@@ -80,7 +89,7 @@ gulp.task('browser-sync', ['default'], function () {
          index: "index.html"
       }
    });
-    
+
    // Watch any files in dist/, reload on change
    gulp.watch(['dist/**']).on('change', browserSync.reload);
 });
