@@ -23,6 +23,9 @@ sudo npm install -g json-server
 
 # karma
 sudo npm install -g karma-cli
+
+# protractor
+sudo npm install protractor -g
 ```
 
 ## Intro to Front-End JavaScript Frameworks
@@ -172,7 +175,6 @@ An Angular Filter format the value of an expression for display but do not modif
 * The client
 * The interfaces
 * The injector
-
 #### Dependency Annotation in Angular
 * Inline array annotation
 ```javascript
@@ -512,54 +514,59 @@ $resource(baseURL + "dishes/:id", null, {'update': {method: 'PUT'}})
     );
 ```
 
-## Angular Testing
-### Jasmin
-Behavior driven development framework for JavaScript:
-* Adopted to test Angular applications
-* Use "describe" function to group our tests
-* Use "it" function to define individual tests
+## End-to-end Testing Angular Applications
+### protractor
+* Node program that enables running of end-to-end tests
+ * Runs tests against your application running in a browser and interacting with it like a real user
+* User WebDriver to control browsers to carry out the tests
+ * Selenium browser automation framework
+ * Can use Direct Connect to test with Chrome and Firefox
+* Uses Jasmine for expression the test syntax
 
-Jasmine Example:
+### Protractor Configuration
 ```javascript
-describe('Controller: MenuController', function() {
-    it('should create "dishes" with 2 dishes fetched from xhr', function() {
-        expect(scope.showMenu).boBeTruthy();
-        expect(scope.dishes).toBeDefined();
-        expect(scope.dishes.length).toBe(2);
-    });
-});
+exports.config={
+  allScriptsTimeout: 11000,
+  specs: ['e2e/*.js'],
+  capabilities: {'browserName': 'chrome'},
+  baseUrl: 'http://localhost:3001/',
+  framework: 'jasmine',
+  directConnect: true,
+  jasmineNodeOpts: {defaultTimeoutInterval: 30000}
+};
 ```
 
-### Karma
-JavaScript based command line tool (NodeJS application):
-* Spawns a web server to load your application's source code
-* Executes your tests in the browser
-
-### angular-mocks
-Angular ngMock module provides mocking support for your tests:
-* Inject and mock Angular services within unit tests
-* Make asynchronous modules execute synchronously to make it easier to execute tests
-* $httpBackend lets us mock XHR requests in tests
-
-Angular Mocks Example!
+### Protractor Test Example
 ```javascript
-// load the controller's module
-beforEach(module('confusionApp'));
-
-var MenuController, scope, $httpBackend;
-
-// Initialize the controller and a mock scope
-beforeEach(inject(function($controller, _$httpBackend_, $rootScope, menuFactory) {
-    // place here mocked dependencies
-    $httpBackend = _$httpBackend_;
-    $httpBackend.expectGET("http://localhost:3000/dishes").respond([...]);
-    
-    scope = $rootScope.$new();
-    
-    MenuController = $controller('MenuController, {
-        $scope: scope, menuFactory: menuFactory
+'use strict';
+describe('conFusion App E2E Testing', function() {
+  it('should automaticallyredirect to / when location hash/fragment is empty',
+    Function() {
+      browser.get('index.html');
+      expect(browser.getLocationAbsUrl()).toMatch("/");
     });
-        
-    $httpBackend.flush();
-}));
+});
+
+describe('menu 0 item',function() {
+  beforeEach(function() {
+    browser.get('index.html#/menu/0');
+  });
+
+  it('should have a name', function() {
+    var name = element(by.binding('dish.name'));
+    expect(name.getText()).toEqual('Uthapizza npm install protractor -gHot $4.99');
+  });
+
+  it('should show the first comment author as', function() {
+    element(by.model('orderText')).sendKeys('author');
+
+    expect(element.all(by.repeater('comment in dish.comments'))
+      .count()).toEqual(5);
+
+    var author = element.all(by.repeater('comment in dish.comments'))
+      .first().element(by.binding('comment.author'));
+
+    expect(author.getText()).toContain('25 Cent');
+  });
+});
 ```
