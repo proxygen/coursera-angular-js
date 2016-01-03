@@ -1,5 +1,6 @@
 conFusion/dist/
 .DS_Store
 conFusion/.tmp/
+conFusion/bower_components/
 conFusion/node_modules/
 json-server/public/*

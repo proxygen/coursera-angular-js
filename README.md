@@ -1,4 +1,30 @@
 # Front-End JavaScript Frameworks: AngularJS
+
+## Prerequisite
+### NodeJS
+#### Install on Ubuntu 15.10
+```shell
+curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+# To compile and install native addons from npm you may also need to install build tools:
+sudo apt-get install -y build-essential
+```
+### Install node module globally
+```shell
+# bower
+sudo npm install -g bower
+
+# gulp
+sudo npm install -g gulp
+
+# json-server
+sudo npm install -g json-server
+
+# karma
+sudo npm install -g karma-cli
+```
+
 ## Intro to Front-End JavaScript Frameworks
 ### Popular JavaScript Framworks:
 * Angular
@@ -294,7 +320,7 @@ angular.module('confusionApp', ['ngRoute'])
 
 * DishDetailController:
 ```javascript
-.controller('DishDetailController', ['$scope', '$routeParams', 
+.controller('DishDetailController', ['$scope', '$routeParams',
     'menuFactory', function($scope, $routeParams, menuFactory) {
         var dish= menuFactory.getDish(parseInt($routeParams.id,10));
         $scope.dish = dish;
@@ -370,7 +396,7 @@ Indicates where to include the views
 ```
 
 ```javascript
-.controller('DishDetailController', ['$scope', '$stateParams', 
+.controller('DishDetailController', ['$scope', '$stateParams',
     'menuFactory', function($scope, $stateParams, menuFactory) {
         var dish= menuFactory.getDish(parseInt($stateParams.id,10));
         $scope.dish = dish;
@@ -446,7 +472,7 @@ $resource(url, [paramDefault], [action], options);
 ### $resource default actions
 ```javascript
 {'get': {method: 'GET'},
- 'save: {method: 'POST'},
+ 'save': {method: 'POST'},
  'query': {method: 'GET', isArray: true},
  'remove': {method: 'DELETE'},
  'delete': {method: 'DELETE'}};
@@ -484,4 +510,3 @@ $resource(baseURL + "dishes/:id", null, {'update': {method: 'PUT'}})
         }
     );
 ```
-
